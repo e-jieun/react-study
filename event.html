@@ -7,33 +7,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <title>Document</title>
 </head>
 
 <body>
   <div id="root"></div>
-</body>
-<script type="text/babel">
-  const root = document.getElementById('root');
-  console.log(root);
-  // 원래는 시간을 알려줌
-  const currentTime = React.createElement('p', null, `${new Date().toLocaleTimeString()}`);
-  const p = React.createElement()
-  // <!--?이 부분을 어떻게 핸들링해서 속성을 바꿔줄 것인지
-  const btn = React.createElement('button', {
-    onClick: function(){
-      console.log(currentTime.props.children)
+  <script>
+    const root = document.getElementById('root');
+    // *버튼의 onclick 이벤트에 속성 값으로 들어갈 들어갈 콜백함수
+    const btnFunc = function () {
+      // <!--?현재 객체의 props.children에 'have a good time'이란 텍스트가 들어있어 변경시키려고 했음
+      // <!--!props.children은 수정이 불가능한 읽기 전용 메서드
+      // <!--!React.cloneElement를 이용해 복제 후 수정할 수 있다고 한다
+      text.props.children = new Date().toLocaleDateString();
+      console.log('hi');
+      console.log(text);
     }
-  }, 'click here!');
+    const text = React.createElement('p', {id: `text`, onClick: btnFunc}, `have a good time`);
+    console.log(text);
+    // const rootChild = React.createElement('div', null, rootChildArr);
+    const rootChild = React.createElement('div', {id:'con'}, text);
+    // <!--!error => 배열을 props.children에 들어가도록 값을 줘서 그런 것 같다, 하나의 요소만을 값으로 줬을 때는 에러가 나지 않음
+    // <!--!결론은 바벨도 cdn 방식도 문제가 아니었고, onClick 이벤트도 문제가 아니었음
+    // error message
+    // react.development.js:245 Warning: Each child in a list should have a unique "key" prop.
+    // Check the top-level render call using <div>. See https://reactjs.org/link/warning-keys for more information.
+    // at p
+    ReactDOM.render(rootChild, root);
+  </script>
 
-  const div = 
-  <>
-  {currentTime}
-  {btn}
-  </>
-  ;
-  ReactDOM.render(div, root);
-</script>
+</body>
 
 </html>
